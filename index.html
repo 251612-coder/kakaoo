@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>24시간 운영 매장 지도</title>
+  <title>24H Map</title>
 
   <style>
+
     * {
       margin: 0;
       padding: 0;
@@ -17,173 +18,305 @@
       height: 100vh;
       overflow: hidden;
       font-family: Arial, sans-serif;
+      background-color: black;
     }
 
     /* 전체 레이아웃 */
     .container {
-      display: flex;
       width: 100%;
       height: 100vh;
-    }
-
-    /* 왼쪽 패널 */
-    .sidebar {
-      width: 35%;
-      min-width: 340px;
-      background-color: #ffffff;
-      border-right: 1px solid #ddd;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* 검색 영역 */
-    .search-area {
-      padding: 20px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .search-title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    .search-box {
-      display: flex;
-      gap: 10px;
-    }
-
-    .search-box input {
-      flex: 1;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .search-box input:focus {
-      border-color: #fee500;
-    }
-
-    .search-box button {
-      padding: 12px 16px;
-      border: none;
-      border-radius: 8px;
-      background-color: #fee500;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .search-box button:hover {
-      background-color: #f6dc00;
-    }
-
-    /* 검색 결과 리스트 */
-    .result-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 15px;
-    }
-
-    .place-item {
-      padding: 15px;
-      border: 1px solid #eee;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .place-item:hover {
-      background-color: #fafafa;
-      border-color: #ccc;
-    }
-
-    .place-name {
-      font-size: 17px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .place-address {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 5px;
-    }
-
-    .place-phone {
-      font-size: 13px;
-      color: #888;
-    }
-
-    .place-category {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-
-    .cafe-category {
-      background-color: #dbeafe;
-      color: #2563eb;
-    }
-
-    .restaurant-category {
-      background-color: #fef3c7;
-      color: #ca8a04;
-    }
-
-    /* 페이지네이션 */
-    .pagination {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 15px;
-      border-top: 1px solid #eee;
-    }
-
-    .page-button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background-color: #f3f4f6;
-    }
-
-    .page-button.active {
-      background-color: #fee500;
-      font-weight: bold;
-    }
-
-    /* 지도 영역 */
-    .map-area {
-      flex: 1;
       position: relative;
     }
 
+    /* 지도 */
     #map {
       width: 100%;
       height: 100%;
     }
 
+    /* 글래스모피즘 사이드바 */
+    .sidebar {
+
+      position: absolute;
+      top: 20px;
+      left: 20px;
+
+      width: 360px;
+      height: calc(100vh - 40px);
+
+      padding: 20px;
+
+      background: rgba(0, 0, 0, 0.45);
+
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+
+      border: 1px solid rgba(57, 255, 20, 0.2);
+
+      border-radius: 24px;
+
+      box-shadow:
+        0 0 20px rgba(57, 255, 20, 0.15),
+        inset 0 0 20px rgba(255,255,255,0.03);
+
+      display: flex;
+      flex-direction: column;
+
+      z-index: 10;
+    }
+
+    /* 제목 */
+    .title {
+
+      color: #39ff14;
+
+      font-size: 28px;
+      font-weight: bold;
+
+      margin-bottom: 20px;
+
+      text-shadow:
+        0 0 10px rgba(57,255,20,0.8);
+    }
+
+    /* 검색창 */
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+
+      flex: 1;
+
+      padding: 14px;
+
+      border: 1px solid rgba(57,255,20,0.3);
+
+      background: rgba(255,255,255,0.05);
+
+      color: white;
+
+      border-radius: 14px;
+
+      outline: none;
+
+      backdrop-filter: blur(10px);
+    }
+
+    .search-box input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .search-box input:focus {
+
+      border-color: #39ff14;
+
+      box-shadow:
+        0 0 15px rgba(57,255,20,0.4);
+    }
+
+    /* 검색 버튼 */
+    .search-box button {
+
+      padding: 14px 18px;
+
+      border: none;
+
+      border-radius: 14px;
+
+      background: #39ff14;
+
+      color: black;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .search-box button:hover {
+
+      transform: scale(1.05);
+
+      box-shadow:
+        0 0 18px rgba(57,255,20,0.8);
+    }
+
+    /* 결과 리스트 */
+    .result-list {
+
+      flex: 1;
+
+      overflow-y: auto;
+
+      padding-right: 4px;
+    }
+
+    /* 스크롤바 */
+    .result-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .result-list::-webkit-scrollbar-thumb {
+
+      background: rgba(57,255,20,0.5);
+
+      border-radius: 20px;
+    }
+
+    /* 카드 */
+    .place-item {
+
+      padding: 16px;
+
+      margin-bottom: 14px;
+
+      border-radius: 18px;
+
+      background: rgba(255,255,255,0.05);
+
+      border: 1px solid rgba(57,255,20,0.1);
+
+      cursor: pointer;
+
+      transition: 0.25s;
+
+      color: white;
+    }
+
+    .place-item:hover {
+
+      transform: translateY(-4px);
+
+      border-color: rgba(57,255,20,0.6);
+
+      box-shadow:
+        0 0 18px rgba(57,255,20,0.25);
+    }
+
+    .place-name {
+
+      font-size: 18px;
+      font-weight: bold;
+
+      margin-bottom: 8px;
+
+      color: #39ff14;
+    }
+
+    .place-address {
+
+      font-size: 14px;
+
+      color: rgba(255,255,255,0.7);
+
+      margin-bottom: 8px;
+    }
+
+    .place-phone {
+
+      font-size: 13px;
+
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* 카테고리 뱃지 */
+    .category-badge {
+
+      display: inline-block;
+
+      margin-top: 10px;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .cafe-badge {
+
+      background: rgba(59,130,246,0.2);
+
+      color: #60a5fa;
+
+      border: 1px solid rgba(59,130,246,0.4);
+    }
+
+    .restaurant-badge {
+
+      background: rgba(250,204,21,0.15);
+
+      color: #fde047;
+
+      border: 1px solid rgba(250,204,21,0.4);
+    }
+
+    /* 페이지네이션 */
+    .pagination {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      margin-top: 16px;
+    }
+
+    .page-button {
+
+      width: 36px;
+      height: 36px;
+
+      border-radius: 50%;
+
+      border: none;
+
+      cursor: pointer;
+
+      background: rgba(255,255,255,0.08);
+
+      color: white;
+
+      transition: 0.2s;
+    }
+
+    .page-button:hover {
+
+      background: rgba(57,255,20,0.25);
+    }
+
+    .page-button.active {
+
+      background: #39ff14;
+
+      color: black;
+
+      font-weight: bold;
+
+      box-shadow:
+        0 0 15px rgba(57,255,20,0.7);
+    }
+
     /* 모바일 대응 */
     @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
 
       .sidebar {
-        width: 100%;
-        height: 45%;
-      }
 
-      .map-area {
-        height: 55%;
+        width: calc(100% - 20px);
+
+        left: 10px;
+        top: 10px;
+
+        height: 50vh;
       }
     }
+
   </style>
 </head>
 
@@ -191,42 +324,42 @@
 
   <div class="container">
 
-    <!-- 왼쪽 검색 패널 -->
+    <!-- 지도 -->
+    <div id="map"></div>
+
+    <!-- 글래스모피즘 패널 -->
     <div class="sidebar">
 
-      <div class="search-area">
+      <div class="title">
+        24H MAP
+      </div>
 
-        <div class="search-title">
-          24시간 운영 매장 검색
-        </div>
+      <div class="search-box">
 
-        <div class="search-box">
+        <input
+          type="text"
+          id="keyword"
+          placeholder="24시 카페 / 식당 검색"
+        />
 
-          <input
-            type="text"
-            id="keyword"
-            placeholder="예: 24시 카페"
-          />
-
-          <button onclick="searchPlace()">
-            검색
-          </button>
-
-        </div>
+        <button onclick="searchPlace()">
+          검색
+        </button>
 
       </div>
 
       <!-- 검색 결과 -->
-      <div class="result-list" id="resultList"></div>
+      <div
+        class="result-list"
+        id="resultList">
+      </div>
 
-      <!-- 페이지 버튼 -->
-      <div class="pagination" id="pagination"></div>
+      <!-- 페이지네이션 -->
+      <div
+        class="pagination"
+        id="pagination">
+      </div>
 
-    </div>
-
-    <!-- 지도 영역 -->
-    <div class="map-area">
-      <div id="map"></div>
     </div>
 
   </div>
@@ -243,51 +376,85 @@
     let markers = [];
     let infoWindow;
 
-    // 지도 초기화 함수
+    // 지도 초기화
     function initializeMap(latitude, longitude) {
 
-      const mapContainer = document.getElementById("map");
+      const mapContainer =
+        document.getElementById("map");
 
       const mapOption = {
-        center: new kakao.maps.LatLng(latitude, longitude),
+
+        center: new kakao.maps.LatLng(
+          latitude,
+          longitude
+        ),
+
         level: 5
       };
 
       // 지도 생성
-      map = new kakao.maps.Map(mapContainer, mapOption);
+      map = new kakao.maps.Map(
+        mapContainer,
+        mapOption
+      );
 
-      // 장소 검색 객체 생성
-      places = new kakao.maps.services.Places();
+      // 장소 검색 객체
+      places =
+        new kakao.maps.services.Places();
 
-      // 인포윈도우 생성
-      infoWindow = new kakao.maps.InfoWindow({
-        zIndex: 1
-      });
+      // 인포윈도우
+      infoWindow =
+        new kakao.maps.InfoWindow({
+          zIndex: 1
+        });
 
-      // 현재 위치 좌표
-      const currentPosition = new kakao.maps.LatLng(
+      // 현재 위치 표시
+      createCurrentLocationMarker(
         latitude,
         longitude
       );
+    }
 
-      // 빨간 점 마커 생성
-      const redMarkerElement = document.createElement("div");
+    // 현재 위치 네온 점
+    function createCurrentLocationMarker(
+      latitude,
+      longitude
+    ) {
 
-      redMarkerElement.style.width = "16px";
-      redMarkerElement.style.height = "16px";
-      redMarkerElement.style.backgroundColor = "red";
-      redMarkerElement.style.borderRadius = "50%";
-      redMarkerElement.style.border = "3px solid white";
-      redMarkerElement.style.boxShadow = "0 0 6px rgba(0,0,0,0.3)";
+      const position =
+        new kakao.maps.LatLng(
+          latitude,
+          longitude
+        );
 
-      // 현재 위치 커스텀 오버레이
-      const currentOverlay = new kakao.maps.CustomOverlay({
-        position: currentPosition,
-        content: redMarkerElement,
-        yAnchor: 0.5
-      });
+      const markerElement =
+        document.createElement("div");
 
-      currentOverlay.setMap(map);
+      markerElement.style.width = "18px";
+      markerElement.style.height = "18px";
+
+      markerElement.style.borderRadius = "50%";
+
+      markerElement.style.background =
+        "#ff0000";
+
+      markerElement.style.border =
+        "3px solid white";
+
+      markerElement.style.boxShadow =
+        "0 0 18px red";
+
+      const overlay =
+        new kakao.maps.CustomOverlay({
+
+          position: position,
+
+          content: markerElement,
+
+          yAnchor: 0.5
+        });
+
+      overlay.setMap(map);
     }
 
     // 현재 위치 가져오기
@@ -299,36 +466,46 @@
 
           function(position) {
 
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            initializeMap(latitude, longitude);
+            initializeMap(
+              position.coords.latitude,
+              position.coords.longitude
+            );
           },
 
           function(error) {
 
-            alert("현재 위치를 가져올 수 없습니다.");
+            alert(
+              "현재 위치를 가져올 수 없습니다."
+            );
 
-            initializeMap(37.5665, 126.9780);
+            initializeMap(
+              37.5665,
+              126.9780
+            );
           }
-
         );
 
       } else {
 
-        alert("브라우저가 위치 정보를 지원하지 않습니다.");
+        alert(
+          "브라우저가 위치 정보를 지원하지 않습니다."
+        );
 
-        initializeMap(37.5665, 126.9780);
+        initializeMap(
+          37.5665,
+          126.9780
+        );
       }
     }
 
-    // 검색 실행 함수
+    // 검색 실행
     function searchPlace() {
 
-      const keyword = document
-        .getElementById("keyword")
-        .value
-        .trim();
+      const keyword =
+        document
+          .getElementById("keyword")
+          .value
+          .trim();
 
       if (!keyword) {
 
@@ -346,50 +523,65 @@
       );
     }
 
-    // 검색 결과 콜백 함수
-    function placesSearchCallback(data, status, pagination) {
+    // 검색 콜백
+    function placesSearchCallback(
+      data,
+      status,
+      pagination
+    ) {
 
-      if (status === kakao.maps.services.Status.OK) {
+      if (
+        status ===
+        kakao.maps.services.Status.OK
+      ) {
 
         displayPlaces(data);
-        displayPagination(pagination);
+
+        displayPagination(
+          pagination
+        );
       }
 
       else if (
-        status === kakao.maps.services.Status.ZERO_RESULT
+        status ===
+        kakao.maps.services.Status.ZERO_RESULT
       ) {
 
-        alert("검색 결과가 없습니다.");
+        alert(
+          "검색 결과가 없습니다."
+        );
       }
 
-      else if (
-        status === kakao.maps.services.Status.ERROR
-      ) {
+      else {
 
-        alert("검색 중 오류가 발생했습니다.");
+        alert(
+          "검색 중 오류가 발생했습니다."
+        );
       }
     }
 
-    // 검색 결과 출력 함수
+    // 결과 출력
     function displayPlaces(placeData) {
 
-      const resultList = document.getElementById("resultList");
+      const resultList =
+        document.getElementById(
+          "resultList"
+        );
 
-      // 기존 결과 삭제
       resultList.innerHTML = "";
 
-      // 기존 마커 제거
       removeMarkers();
 
-      // 지도 범위 객체 생성
-      const bounds = new kakao.maps.LatLngBounds();
+      const bounds =
+        new kakao.maps.LatLngBounds();
 
       placeData.forEach(function(place) {
 
-        const position = new kakao.maps.LatLng(
-          place.y,
-          place.x
-        );
+        const position =
+          new kakao.maps.LatLng(
+            place.y,
+            place.x
+          );
 
         // 카테고리 확인
         const isCafe =
@@ -398,39 +590,49 @@
         const isRestaurant =
           place.category_group_code === "FD6";
 
-        // 마커 색상 설정
-        let markerColor = "#9ca3af";
+        // 마커 색상
+        let markerColor = "#39ff14";
 
         if (isCafe) {
-          markerColor = "#2563eb";
+          markerColor = "#3b82f6";
         }
 
         if (isRestaurant) {
           markerColor = "#facc15";
         }
 
-        // 커스텀 마커 생성
-        const markerElement = document.createElement("div");
+        // 네온 마커
+        const markerElement =
+          document.createElement("div");
 
-        markerElement.style.width = "20px";
-        markerElement.style.height = "20px";
+        markerElement.style.width = "18px";
+        markerElement.style.height = "18px";
+
         markerElement.style.borderRadius = "50%";
-        markerElement.style.backgroundColor = markerColor;
-        markerElement.style.border = "3px solid white";
-        markerElement.style.boxShadow =
-          "0 0 6px rgba(0,0,0,0.3)";
 
-        const marker = new kakao.maps.CustomOverlay({
-          position: position,
-          content: markerElement,
-          yAnchor: 0.5
-        });
+        markerElement.style.background =
+          markerColor;
+
+        markerElement.style.border =
+          "3px solid white";
+
+        markerElement.style.boxShadow =
+          `0 0 18px ${markerColor}`;
+
+        const marker =
+          new kakao.maps.CustomOverlay({
+
+            position: position,
+
+            content: markerElement,
+
+            yAnchor: 0.5
+          });
 
         marker.setMap(map);
 
         markers.push(marker);
 
-        // 지도 범위 추가
         bounds.extend(position);
 
         // 카테고리 텍스트
@@ -438,17 +640,21 @@
         let categoryClass = "";
 
         if (isCafe) {
+
           categoryText = "카페";
-          categoryClass = "cafe-category";
+          categoryClass = "cafe-badge";
         }
 
         if (isRestaurant) {
+
           categoryText = "식당";
-          categoryClass = "restaurant-category";
+          categoryClass =
+            "restaurant-badge";
         }
 
-        // 결과 아이템 생성
-        const item = document.createElement("div");
+        // 카드 생성
+        const item =
+          document.createElement("div");
 
         item.className = "place-item";
 
@@ -465,38 +671,50 @@
             ${place.phone || "전화번호 없음"}
           </div>
 
-          <div class="place-category ${categoryClass}">
+          <div class="category-badge ${categoryClass}">
             ${categoryText}
           </div>
         `;
 
-        // 리스트 클릭 이벤트
-        item.addEventListener("click", function() {
+        // 카드 클릭
+        item.addEventListener(
+          "click",
+          function() {
 
-          map.setCenter(position);
+            map.setCenter(position);
 
-          infoWindow.setContent(`
-            <div style="padding:8px; font-size:13px;">
-              ${place.place_name}
-            </div>
-          `);
+            infoWindow.setContent(`
+              <div style="
+                padding:10px;
+                font-size:13px;
+              ">
+                ${place.place_name}
+              </div>
+            `);
 
-          infoWindow.open(map);
-          infoWindow.setPosition(position);
-        });
+            infoWindow.open(map);
+            infoWindow.setPosition(position);
+          }
+        );
 
-        // 마커 클릭 이벤트
-        markerElement.addEventListener("click", function() {
+        // 마커 클릭
+        markerElement.addEventListener(
+          "click",
+          function() {
 
-          infoWindow.setContent(`
-            <div style="padding:8px; font-size:13px;">
-              ${place.place_name}
-            </div>
-          `);
+            infoWindow.setContent(`
+              <div style="
+                padding:10px;
+                font-size:13px;
+              ">
+                ${place.place_name}
+              </div>
+            `);
 
-          infoWindow.open(map);
-          infoWindow.setPosition(position);
-        });
+            infoWindow.open(map);
+            infoWindow.setPosition(position);
+          }
+        );
 
         resultList.appendChild(item);
       });
@@ -505,13 +723,17 @@
       map.setBounds(bounds);
     }
 
-    // 페이지네이션 출력 함수
-    function displayPagination(pagination) {
+    // 페이지네이션
+    function displayPagination(
+      pagination
+    ) {
 
-      const paginationContainer =
-        document.getElementById("pagination");
+      const container =
+        document.getElementById(
+          "pagination"
+        );
 
-      paginationContainer.innerHTML = "";
+      container.innerHTML = "";
 
       for (
         let page = 1;
@@ -519,46 +741,59 @@
         page++
       ) {
 
-        const button = document.createElement("button");
+        const button =
+          document.createElement(
+            "button"
+          );
 
         button.innerText = page;
-        button.className = "page-button";
 
-        // 현재 페이지 표시
-        if (page === pagination.current) {
-          button.classList.add("active");
+        button.className =
+          "page-button";
+
+        if (
+          page === pagination.current
+        ) {
+
+          button.classList.add(
+            "active"
+          );
         }
 
-        // 페이지 클릭 이벤트
-        button.addEventListener("click", function() {
+        button.addEventListener(
+          "click",
+          function() {
 
-          pagination.gotoPage(page);
-        });
+            pagination.gotoPage(page);
+          }
+        );
 
-        paginationContainer.appendChild(button);
+        container.appendChild(button);
       }
     }
 
-    // 기존 마커 제거 함수
+    // 기존 마커 제거
     function removeMarkers() {
 
       markers.forEach(function(marker) {
 
         marker.setMap(null);
-
       });
 
       markers = [];
     }
 
-    // Enter 키 검색 지원
-    document.addEventListener("keydown", function(event) {
+    // Enter 검색
+    document.addEventListener(
+      "keydown",
+      function(event) {
 
-      if (event.key === "Enter") {
+        if (event.key === "Enter") {
 
-        searchPlace();
+          searchPlace();
+        }
       }
-    });
+    );
 
     // 지도 로드 완료 후 실행
     window.onload = function() {
@@ -568,7 +803,6 @@
         getCurrentLocation();
 
       });
-
     };
 
   </script>
